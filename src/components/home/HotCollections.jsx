@@ -8,7 +8,7 @@ function HotCollections() {
     JSON.parse(localStorage.getItem("collections")) || []
   );
   const [loading, setLoading] = useState()
-  
+
 
   useEffect(() => {
     async function fetchCollections() {
@@ -16,6 +16,7 @@ function HotCollections() {
       const { data } = await axios.get(`https://us-central1-nft-cloud-functions.cloudfunctions.net/hotCollections`)
       setCollections(data)
       setLoading(false)
+      console.log(data)
     }
     fetchCollections()
   }, [])
@@ -35,7 +36,7 @@ function HotCollections() {
             </div>
           </div>
           {
-            loading ?(
+            loading ? (
               <div className="item">
                 <div className="nft_coll">
                   <div className="nft__wrap">
@@ -44,31 +45,32 @@ function HotCollections() {
                 </div>
               </div>
             ) : (
-          <OwlCarousel className="owl-theme" loop margin={10} items="4" nav slideBy={1}>
-            {collections.map((collection, index) => (
-              <div className="item" key={index}>
-                <div className="nft_coll">
-                  <div className="nft_wrap">
-                    <Link to="/item-details">
-                      <img src={collection.nftImage} className="lazy img-fluid" alt="" />
-                    </Link>
+              <OwlCarousel className="owl-theme" loop margin={10} items="4" nav slideBy={1}>
+                {collections.map((collection, index) => (
+                  <div className="item" key={index}>
+                    <div className="nft_coll">
+                      <div className="nft_wrap">
+                        <Link to={`/item-details/${collection.nftId}`}>
+                          <img src={collection.nftImage} className="lazy img-fluid" alt="" />
+                        </Link>
+                      </div>
+                      <div className="nft_coll_pp">
+                        <Link to={`/author/${collection.authorId}`}>
+                          <img className="lazy pp-coll" src={collection.authorImage} alt="" />
+                        </Link>
+
+                        <i className="fa fa-check"></i>
+                      </div>
+                      <div className="nft_coll_info">
+                        <Link to="/explore">
+                          <h4>{collection.title}</h4>
+                        </Link>
+                        <span>ERC - {collection.code}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="nft_coll_pp">
-                    <Link to="/author">
-                      <img className="lazy pp-coll" src={collection.authorImage} alt="" />
-                    </Link>
-                    <i className="fa fa-check"></i>
-                  </div>
-                  <div className="nft_coll_info">
-                    <Link to="/explore">
-                      <h4>{collection.title}</h4>
-                    </Link>
-                    <span>ERC - {collection.code}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </OwlCarousel>
+                ))}
+              </OwlCarousel>
             )
           }
         </div>
