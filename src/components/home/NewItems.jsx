@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import OwlCarousel from 'react-owl-carousel';
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 function NewItems() {
@@ -54,13 +55,8 @@ function NewItems() {
                 {newItems.map((newItem, index) => (
                   <div className="nft__item" key={index}>
                     <div className="author_list_pp">
-                      <Link
-                        to={newItem.authorId}
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Creator: Monica Lucas"
-                      >
-                        <img className="lazy" src={newItem.authorImage} alt="" />
+                    <Link to={`/author/${newItem.authorId}`}>
+                        <img className="lazy" src={newItem.authorImage} onClick={() => Navigate(`${newItem.authorId}`)} />
                         <i className="fa fa-check"></i>
                       </Link>
                     </div>
@@ -83,7 +79,7 @@ function NewItems() {
                         </div>
                       </div>
 
-                      <Link to="/item-details">
+                      <Link to={`/item-details/${newItem.nftId}`}>
                         <img
                           src={newItem.nftImage}
                           className="lazy nft__item_preview"
@@ -92,7 +88,7 @@ function NewItems() {
                       </Link>
                     </div>
                     <div className="nft__item_info">
-                      <Link to="/item-details">
+                    <Link to={`/item-details/${newItem.nftId}`}>
                         <h4>{newItem.title}</h4>
                       </Link>
                       <div className="nft__item_price">{newItem.price} ETH</div>
